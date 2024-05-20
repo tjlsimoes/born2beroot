@@ -121,6 +121,12 @@ Restart SSH service:
 
 `sudo systemctl restart ssh`
 
+[Connecting via SSH]
+
+Command using NAT Portforwarding (4243, Host Port, to 4242, Guest Port):
+
+`ssh <user>@localhost -p 4242 `
+
 
 [UFW]
 
@@ -174,3 +180,117 @@ https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-f
 
 
 What is TTY (and PTY)?
+
+
+[Password Policy]
+
+Edit /etc/login.defs file.
+
+PASS_MAX_DAYS 30  
+PASS_MIN_DAYS 2  
+PASS_WARN_AGE 7  
+
+PASS_WARN_AGE: The number of days a warning is issued to the user before an impending password expiry.
+
+Check password info on user:
+`sudo chage -l <user>`
+
+Change PASS_MAX_DAYS for default user:
+`sudo chage -M <number> <user>`
+
+Change PASS_MIN_DAYS for default user:
+`sudo chage -m <number> <user>`
+
+https://www.redhat.com/sysadmin/password-expiration-date-linux
+
+Install a password quality checking library: pam_pwquality - PAM module to perform password quality checking.
+
+Edit `nano /etc/pam.d/common-password`:
+minlen=10
+ucredit=-1
+dcredit=-1
+lcredit=-1
+maxrepeat=3
+reject_username
+difok=7
+enforce_for_root
+
+...credit = if negative == minimum number of ... that must be met for a new pasword.  
+maxrepeat = max amount of consecutive equal characters.  
+difok = number of changes in the new password from the old.  
+reject_username = check if password contains username, staiht or reverse.
+enforce_for_root = apply also to root user.  
+
+As regards to password having at least 7 characters not part of previous password not applying to root password:
+
+enforce_for_root
+
+The module will return error on failed check even if the user changing the password is root. This option is off by default which means that just the message about the failed check is printed but root can change the password anyway. **Note that root is not asked for an old password so the checks that compare the old and new password are not performed.**
+
+https://manpages.debian.org/stretch/libpam-pwquality/pam_pwquality.8.en.html
+
+What is PAM?
+
+A pluggable authentication module (PAM) is a mechanism to integrate multiple low-level authentication schemes into a high-level application programming interface (API). PAM allows programs that rely on authentication to be written independently of the underlying authentication scheme.
+
+https://en.wikipedia.org/wiki/Pluggable_authentication_module
+
+
+[Script]
+
+Architecture:
+
+`uname` -  print system information
+
+Processors (physical or virtual):
+
+`/proc/cpuinfo`: `proc` - The  proc filesystem is a pseudo-filesystem which provides an interface to kernel data structures.
+
+What is really a virtual processor?
+
+RAM:
+
+`free --mega` - Display amount of free and used memory in the system
+
+Disk:
+
+`df -m` - report file system disk space usage
+
+CPU load:
+
+`vmstat ` - vmstat reports information about processes, memory, paging, block IO, traps, disks and cpu activity.
+
+
+One could put no option but if given it will output info for an interval of seconds, e.g. from 1 to 4.
+
+https://www.baeldung.com/linux/get-cpu-usage
+
+
+Last Reboot:
+
+`who -b` -  time of last system boot
+
+LVM:
+
+`lsblk` - list block devices.
+
+TCP Established connections:
+
+`ss -ta` - -t: Display TCP sockets, -a: display both listening and non-listening (for TCP this means established connections) sockets.
+
+Online users:
+
+`users` - print the user names of users currently logged in to the current host
+
+iPv4:
+
+`hostname - I`: display  all network addresses of the host.
+
+
+MAC Address:
+
+`ip address`
+
+Number commands executed with sudo:
+
+`journalctl _COMM=sudo` - query the systemd journal
