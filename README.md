@@ -116,3 +116,61 @@ Restart SSH service:
 Check SSH service status:
 
 `sudo service ssh status`
+
+Restart SSH service:
+
+`sudo systemctl restart ssh`
+
+
+[UFW]
+
+UFW, or Uncomplicated Firewall, is an interface to iptables that is geared towards simplifying the process of configuring a firewall. While iptables is a solid and flexible tool, it can be difficult for beginners to learn how to use it to properly configure a firewall. If you’re looking to get started securing your network, and you’re not sure which tool to use, UFW may be the right choice for you.
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu
+
+
+Enable UFW service:
+
+`sudo ufw enable`
+
+Check UFW status and numbered rules:
+
+`sudo ufw status numbered`
+
+Allow port on UFW:
+
+`sudo ufw alow <port_nbr>`
+
+[Sudo policies]
+
+Create folder /var/log/sudo to log commands, input and output.
+
+Create file /etc/sudoers.d/sudo_config to store sudo policy.
+
+Sudo policy
+
+`Defaults  passwd_tries=3`
+
+`Defaults badpass_message="-------"`
+
+`Defaults  logfile="/var/log/sudo/sudo_config"`  
+
+`Defaults  log_input, log_output`  
+
+`Defaults  iolog_dir="/var/log/sudo"`  
+
+`Defaults  requiretty` 
+
+`Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"`
+
+
+When requiretty is set, sudo must be run from a logged-in terminal session (a tty). This prevents sudo from being used from daemons or other detached processes like cronjobs or webserver plugins. It also means you can't run it directly from an ssh call without setting up a terminal session.
+
+This can prevent certain kinds of escalation attacks. For example, if I have a way to modify the crontab for a user who has NOPASSWD sudo permissions, I could use that to kick off a job as root. With requiretty, I can't do that...
+
+...easily. This restriction is not particularly hard to circumvent, and so generally isn't all that useful compared to the valid use cases it breaks. Red Hat used to use it, but removed it a few years ago.
+
+https://stackoverflow.com/questions/67985925/why-would-i-want-to-require-a-tty-for-sudo-whats-the-security-benefit-of-requi
+
+
+What is TTY (and PTY)?
