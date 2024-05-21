@@ -28,7 +28,7 @@ cpu_load=$(vmstat 1 2 | tail -1 | awk '{printf "%.1f%%\n", 100 - $15}')
 last_reboot=$(who -b | awk '{printf "%s %s", $3, $4}')
 
 # LVM
-lvm=$(if [ $(lsblk | grep lvm | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
+lvm=$(if [ $(lsblk | awk '{print $6}' | grep lvm | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
 
 # Number of active conections
 nbr_act_conn=$(ss -a | wc -l)
