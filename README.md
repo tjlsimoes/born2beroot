@@ -294,3 +294,92 @@ MAC Address:
 Number commands executed with sudo:
 
 `journalctl _COMM=sudo` - query the systemd journal
+
+				[Bonus]
+
+[Lighttpd]
+
+
+lighttpd (pronounced /lighty/) is a secure, fast, compliant, and very flexible web server that has been optimized for high-performance environments. lighttpd uses memory and CPU efficiently and has lower resource use than other popular web servers.
+
+Need to allow connections through port 80.
+
+[Wordpress]
+
+WordPress is a web content management system. It was originally created as a tool to publish blogs but has evolved to support publishing other web content, including more traditional websites, mailing lists and Internet forum, media galleries, membership sites, learning management systems and online stores.
+
+[wget]
+
+Command line tool used to download files from the web.
+
+[zip]
+
+Command line utility for compressing and decompressing in ZIP format.
+
+`cd /var/www`
+
+Replace file `hmtl` with wordpress unzipped.
+
+
+Change permissions on the new html folder - to avoid problems in the future.
+
+https://www.youtube.com/watch?v=PsMhopODLTY
+
+
+[MariaDB]
+
+MariaDB Server is one of the most popular open source relational databases. It’s made by the original developers of MySQL and guaranteed to stay open source.
+
+Need to ready database for production environment: `sudo mysql_secure_installation`.
+
+`mariadb`
+
+`CREATE DATABASE <database_name>;`
+
+`SHOW DATABASES;`
+
+`CREATE USER '<user>@'localhost' IDENTIFIED BY '<password>';`
+
+`GRANT ALL PRIVILEGES ON <database_name>.* TO '<user>'@'localhost';`
+
+`FLUSH PRIVILEGES`;
+
+
+[PHP]
+
+PHP (recursive acronym for PHP: Hypertext Preprocessor) is a widely-used open source general-purpose scripting language that is especially suited for web development and can be embedded into HTML.
+
+What distinguishes PHP from something like client-side JavaScript is that the code is executed on the server, generating HTML which is then sent to the client. The client would receive the results of running that script, but would not know what the underlying code was. 
+
+ There are three main areas where PHP scripts are used.
+
+1. Server-side scripting. This is the most traditional and main target field for PHP. You need three things to make this work: the PHP parser (CGI or server module), a web server and a web browser. You need to run the web server, with a connected PHP installation. You can access the PHP program output with a web browser, viewing the PHP page through the server. All these can run on your home machine if you are just experimenting with PHP programming. See the installation instructions section for more information.
+
+2. Command line scripting. You can make a PHP script to run it without any server or browser. You only need the PHP parser to use it this way. This type of usage is ideal for scripts regularly executed using cron (on *nix or Linux) or Task Scheduler (on Windows). These scripts can also be used for simple text processing tasks. See the section about Command line usage of PHP for more information.
+
+3. Writing desktop applications. PHP is probably not the very best language to create a desktop application with a graphical user interface, but if you know PHP very well, and would like to use some advanced PHP features in your client-side applications you can also use PHP-GTK to write such programs. You also have the ability to write cross-platform applications this way. PHP-GTK is an extension to PHP, not available in the main distribution. If you are interested in PHP-GTK, visit » its own website.
+
+
+`sudo apt install php-cgi php-mysql`
+
+[Wordpress Configuration]
+
+`cd /var/www/html`
+
+Create a copy of wp-config-sample.php and name it wp-config.php.
+
+`nano wp-config.php`
+
+Update database_name_here, username_here, password_here.
+
+Enable the fastcgi-php module in Lighttpd to improve the performance and speed of web applications on the server: `sudo lighty-enable-mod fastcgi`.
+
+Enable the fastcgi-php module in Lighttpd to improve the performance and speed of PHP-based web applications on the server: `sudo lighty-enable-mod fastcgi-php`.
+
+Update and apply changes: `sudo service lighttpd force-reload`.
+
+Access localhost. Local admin page at /wp-admin.
+
+https://www.youtube.com/watch?v=fEAqeKU6LwU
+https://www.youtube.com/watch?v=qH-QdjaD6ac
+https://www.youtube.com/watch?v=BAMkvEvpol0
